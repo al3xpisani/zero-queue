@@ -1,0 +1,60 @@
+image: node:14
+definitions:
+  services:
+    docker:
+      memory: 4096
+pipelines:
+  branches:
+    staging:
+      - step:
+          size: 2x
+          name: Realiza o build em staging e envia a imagem para o ECR
+          trigger: automatic
+          script:
+            - export NODE_OPTIONS=--openssl-legacy-provider
+            - export BUILD_ID=$BITBUCKET_BRANCH_$BITBUCKET_COMMIT_$BITBUCKET_BUILD_NUMBER
+            - docker build -t pdv-front-backoffice .
+            - pipe: atlassian/aws-ecr-push-image:1.5.0
+              variables:
+                AWS_ACCESS_KEY_ID: $SQUAD_PDV_AWS_ACCESS_KEY_ID_STAGING
+                AWS_SECRET_ACCESS_KEY: $SQUAD_PDV_AWS_SECRET_ACCESS_KEY_STAGING
+                AWS_DEFAULT_REGION: 'us-east-1'
+                TAGS: '${BITBUCKET_TAG} latest'
+                IMAGE_NAME: 'pdv-front-backoffice'
+            - pipe: atlassian/aws-ecs-deploy:1.6.2
+              variables:
+                AWS_ACCESS_KEY_ID: $SQUAD_PDV_AWS_ACCESS_KEY_ID_STAGING
+                AWS_SECRET_ACCESS_KEY: $SQUAD_PDV_AWS_SECRET_ACCESS_KEY_STAGING
+                AWS_DEFAULT_REGION: 'us-east-1'
+                CLUSTER_NAME: 'pdv-front'
+                SERVICE_NAME: 'mobly-pdv-front-backoffice-staging-service'
+                FORCE_NEW_DEPLOYMENT: 'true'
+          services:
+            - docker
+
+    master:
+      - step:
+          size: 2x
+          name: build in prod && send image to ECR
+          trigger: automatic
+          script:
+            - export NODE_OPTIONS=--openssl-legacy-provider
+            - export BUILD_ID=$BITBUCKET_BRANCH_$BITBUCKET_COMMIT_$BITBUCKET_BUILD_NUMBER
+            - docker build -t pdv-front-backoffice -f Dockerfile.production .
+            - pipe: atlassian/aws-ecr-push-image:1.5.0
+              variables:
+                AWS_ACCESS_KEY_ID: $SQUAD_PDV_AWS_ACCESS_KEY_ID_PROD
+                AWS_SECRET_ACCESS_KEY: $SQUAD_PDV_AWS_SECRET_ACCESS_KEY_PROD
+                AWS_DEFAULT_REGION: 'us-east-1'
+                TAGS: '${BITBUCKET_TAG} latest'
+                IMAGE_NAME: 'pdv-front-backoffice'
+            - pipe: atlassian/aws-ecs-deploy:1.6.2
+              variables:
+                AWS_ACCESS_KEY_ID: $SQUAD_PDV_AWS_ACCESS_KEY_ID_PROD
+                AWS_SECRET_ACCESS_KEY: $SQUAD_PDV_AWS_SECRET_ACCESS_KEY_PROD
+                AWS_DEFAULT_REGION: 'us-east-1'
+                CLUSTER_NAME: 'pdv-front'
+                SERVICE_NAME: 'mobly-pdv-front-backoffice-prod-service'
+                FORCE_NEW_DEPLOYMENT: 'true'
+          services:
+            - docker
