@@ -13,11 +13,7 @@ export type FirebaseOptions = {
     measurementId: string
 }
 
-export type HouseSchema = {
+export type DiagramSchema = {
     name: string
-    region: string
-    currentLord: string
-    founded: string
+    body: object
 }
-
-export type tvSeries = []

@@ -1,5 +1,5 @@
 import { Express } from "express-serve-static-core"
-import routerHouse from "./house/houses"
+import routerDiagram from "./diagrams/diagram"
 import routerToken from "./token/token"
 
 const setRoutePaths = (app: Express) => {
@@ -8,6 +8,6 @@ const setRoutePaths = (app: Express) => {
     })
 
     app.use("/api/token", routerToken)
-    app.use("/api/houses", routerHouse)
+    app.use("/api/diagrams", routerDiagram)
 }
 export default setRoutePaths

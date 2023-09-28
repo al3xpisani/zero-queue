@@ -1,5 +1,5 @@
 import { initializeApp, getApp } from "firebase/app"
-import { getFirestore, collection, addDoc } from "firebase/firestore"
+import { getFirestore, collection, addDoc, updateDoc } from "firebase/firestore"
 import { ref } from "firebase/database"
 import { firebaseConfig } from "./google-firebase-keys-dev"
 import { FirebaseOptions } from "../types"
@@ -21,4 +21,4 @@ export function initFirebaseApp(config: FirebaseOptions) {
     }
 }
 
-export { app, appAdmin, db, ref, collection, addDoc }
+export { app, appAdmin, db, ref, collection, addDoc, updateDoc }

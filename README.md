@@ -1,15 +1,13 @@
-# PlayGOT
+# PlayBOX
 
 ## _CRUD desenvolvido em NodeJS com express e Google Cloud (Firebase)_
 
 autor: Alexandre (alexandre.pisani.ant@gmail.com)
 
-##### NPM (Executar com npm para baixar as libs do registro público do npm). Dentro do diretório do projeto rodar:
+##### NPM 
 
 -   npm i
 -   npm run start
-
-O acesso ao Google Cloud Firebase console foi disponibilizado ao email do Allan.
 
 ## Firebase console
 
