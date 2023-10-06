@@ -13,21 +13,21 @@ pipelines:
           script:
             - export NODE_OPTIONS=--openssl-legacy-provider
             - export BUILD_ID=$BITBUCKET_BRANCH_$BITBUCKET_COMMIT_$BITBUCKET_BUILD_NUMBER
-            - docker build -t pdv-front-backoffice .
+            - docker build -t smart-box .
             - pipe: atlassian/aws-ecr-push-image:1.5.0
               variables:
-                AWS_ACCESS_KEY_ID: $SQUAD_PDV_AWS_ACCESS_KEY_ID_STAGING
-                AWS_SECRET_ACCESS_KEY: $SQUAD_PDV_AWS_SECRET_ACCESS_KEY_STAGING
+                AWS_ACCESS_KEY_ID: $SQUAD_BOX_AWS_ACCESS_KEY_ID_STAGING
+                AWS_SECRET_ACCESS_KEY: $SQUAD_BOX_AWS_SECRET_ACCESS_KEY_STAGING
                 AWS_DEFAULT_REGION: 'us-east-1'
                 TAGS: '${BITBUCKET_TAG} latest'
-                IMAGE_NAME: 'pdv-front-backoffice'
+                IMAGE_NAME: 'smart-box'
             - pipe: atlassian/aws-ecs-deploy:1.6.2
               variables:
-                AWS_ACCESS_KEY_ID: $SQUAD_PDV_AWS_ACCESS_KEY_ID_STAGING
-                AWS_SECRET_ACCESS_KEY: $SQUAD_PDV_AWS_SECRET_ACCESS_KEY_STAGING
+                AWS_ACCESS_KEY_ID: $SQUAD_BOX_AWS_ACCESS_KEY_ID_STAGING
+                AWS_SECRET_ACCESS_KEY: $SQUAD_BOX_AWS_SECRET_ACCESS_KEY_STAGING
                 AWS_DEFAULT_REGION: 'us-east-1'
-                CLUSTER_NAME: 'pdv-front'
-                SERVICE_NAME: 'mobly-pdv-front-backoffice-staging-service'
+                CLUSTER_NAME: 'box-front'
+                SERVICE_NAME: 'smart-box-staging-service'
                 FORCE_NEW_DEPLOYMENT: 'true'
           services:
             - docker
@@ -40,21 +40,21 @@ pipelines:
           script:
             - export NODE_OPTIONS=--openssl-legacy-provider
             - export BUILD_ID=$BITBUCKET_BRANCH_$BITBUCKET_COMMIT_$BITBUCKET_BUILD_NUMBER
-            - docker build -t pdv-front-backoffice -f Dockerfile.production .
+            - docker build -t smart-box -f Dockerfile.production .
             - pipe: atlassian/aws-ecr-push-image:1.5.0
               variables:
-                AWS_ACCESS_KEY_ID: $SQUAD_PDV_AWS_ACCESS_KEY_ID_PROD
-                AWS_SECRET_ACCESS_KEY: $SQUAD_PDV_AWS_SECRET_ACCESS_KEY_PROD
+                AWS_ACCESS_KEY_ID: $SQUAD_BOX_AWS_ACCESS_KEY_ID_PROD
+                AWS_SECRET_ACCESS_KEY: $SQUAD_BOX_AWS_SECRET_ACCESS_KEY_PROD
                 AWS_DEFAULT_REGION: 'us-east-1'
                 TAGS: '${BITBUCKET_TAG} latest'
-                IMAGE_NAME: 'pdv-front-backoffice'
+                IMAGE_NAME: 'smart-box'
             - pipe: atlassian/aws-ecs-deploy:1.6.2
               variables:
-                AWS_ACCESS_KEY_ID: $SQUAD_PDV_AWS_ACCESS_KEY_ID_PROD
-                AWS_SECRET_ACCESS_KEY: $SQUAD_PDV_AWS_SECRET_ACCESS_KEY_PROD
+                AWS_ACCESS_KEY_ID: $SQUAD_BOX_AWS_ACCESS_KEY_ID_PROD
+                AWS_SECRET_ACCESS_KEY: $SQUAD_BOX_AWS_SECRET_ACCESS_KEY_PROD
                 AWS_DEFAULT_REGION: 'us-east-1'
-                CLUSTER_NAME: 'pdv-front'
-                SERVICE_NAME: 'mobly-pdv-front-backoffice-prod-service'
+                CLUSTER_NAME: 'box-front'
+                SERVICE_NAME: 'smart-box-prod-service'
                 FORCE_NEW_DEPLOYMENT: 'true'
           services:
             - docker

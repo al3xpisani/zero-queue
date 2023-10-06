@@ -6,7 +6,8 @@ import {
     createDiagram,
     editDiagrams,
     listDiagrams,
-    deleteDiagrams
+    deleteDiagrams,
+    listDiagramsById
 } from "../../controllers/diagramController"
 import { checkValidToken } from "../../middleware/check-token"
 import httpStatus from "http-status"
@@ -26,10 +27,11 @@ routerDiagram.post(
     bodyParser.json(),
     async (req: Request, res: Response) => {
         try {
-            await createDiagram(req.body)
-            return res
-                .status(httpStatus.CREATED)
-                .json({ status: "Diagram - Record created." })
+            const newCreatedDiagram = await createDiagram(req.body)
+            return res.status(httpStatus.CREATED).json({
+                status: "Diagram - Record created.",
+                data: [newCreatedDiagram]
+            })
         } catch (e) {
             return res
                 .status(httpStatus.BAD_REQUEST)
@@ -55,6 +57,25 @@ routerDiagram.get(
     }
 )
 
+routerDiagram.get(
+    "/:diagramID",
+    midVerifyValidToken,
+    async (req: Request, res: Response) => {
+        try {
+            const { diagramID } = req.params
+            const allDiagrams = await listDiagramsById("id", diagramID)
+            return res.status(httpStatus.OK).json({
+                status: "Diagram - Listing by ID ok.",
+                data: allDiagrams
+            })
+        } catch (e) {
+            return res
+                .status(httpStatus.BAD_REQUEST)
+                .json({ status: "Error when listing diagram " + e })
+        }
+    }
+)
+
 routerDiagram.delete(
     "/:diagramID",
     midVerifyValidToken,
@@ -63,7 +84,10 @@ routerDiagram.delete(
         try {
             const { diagramID } = req.params
             const responseRemove = await deleteDiagrams("id", diagramID)
-            return res.status(httpStatus.NO_CONTENT).json(responseRemove)
+            return res.status(httpStatus.OK).json({
+                status: "Diagram - Record deleted.",
+                data: [responseRemove]
+            })
         } catch (e) {
             return res
                 .status(httpStatus.BAD_REQUEST)

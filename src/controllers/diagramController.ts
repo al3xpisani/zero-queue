@@ -1,4 +1,4 @@
-import {
+import fetchFirebaseDataMatch, {
     addFirebaseDocument,
     fetchAllFirebaseData,
     deleteFirebaseDoc,
@@ -9,10 +9,28 @@ import { DiagramSchema } from "../types"
 
 export const createDiagram = async (diagramData: DiagramSchema) => {
     try {
-        diagramData["id"] = uuidv4()
+        const id = uuidv4()
+        diagramData["id"] = id
+        diagramData["name"] = "workflow" + id.substring(0, 8)
+        diagramData["creation"] = new Date().toISOString()
         await addFirebaseDocument(diagramData, process.env.COLLECTION_NAME)
+        return diagramData
     } catch (e) {
         console.error("Error when creating diagram :  ", e)
+    }
+}
+export const listDiagramsById = async (field: string, fieldValue: string) => {
+    try {
+        const respAlldiagrams = await fetchFirebaseDataMatch(
+            process.env.COLLECTION_NAME,
+            field,
+            fieldValue,
+            field,
+            "true"
+        )
+        return respAlldiagrams
+    } catch (e) {
+        console.error("Error when listing diagrams :  ", e)
     }
 }
 export const listDiagrams = async () => {

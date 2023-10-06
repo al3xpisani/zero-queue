@@ -7,8 +7,6 @@ import bodyParser from "body-parser"
 const app = express()
 const port = process.env.EXPRESS_PORT
 setRoutePaths(app)
-
-app.use(express.json())
 app.use(cors())
 
 export const setBodyParser2Json = () => {

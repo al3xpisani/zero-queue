@@ -14,6 +14,5 @@ export type FirebaseOptions = {
 }
 
 export type DiagramSchema = {
-    name: string
     body: object
 }
