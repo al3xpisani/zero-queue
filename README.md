@@ -1,8 +1,8 @@
 # PlayBOX
 
-## _CRUD desenvolvido em NodeJS com express e Google Cloud (Firebase)_
+## _CRUD developed in NodeJS with Express and Google Cloud (Firebase)_
 
-autor: Alexandre (alexandre.pisani.ant@gmail.com)
+author: Alexandre (alexandre.pisani.ant@gmail.com)
 
 ##### NPM 
 
@@ -10,29 +10,44 @@ autor: Alexandre (alexandre.pisani.ant@gmail.com)
 -   npm run start
 
 ## Firebase console
+### Create your onw google cloud firebase at firebase console and change the information below by your own or concat the developer to send you the data for tests
 
+##### src/config/google-firebase-keys-devs.ts
+```
+export const firebaseConfig: FirebaseOptions = {
+    apiKey: process.env.apiKey,
+    authDomain: process.env.authDomain,
+    projectId: process.env.projectId,
+    storageBucket: process.env.storageBucket,
+    messagingSenderId: process.env.messagingSenderId,
+    appId: process.env.appId,
+    measurementId: process.env.measurementId
+}
+```
 [Google firebase console](https://console.firebase.google.com/u/0/project/zeroqueue-30894/firestore)
-
-![Screenshot](https://i.ibb.co/QCdbq7X/image.png)
+![Screenshot](https://i.ibb.co/WW5b4QL/image.png)
 
 ## API Contract (Front-End team)
 
 [Download Imsomnia](https://insomnia.rest/download)
 
-Passo a passo para testar as apis rest do back-end Game Of Thrones
+Step-by-step to test the back-end APIs
 
--   Baixe os arquivos json e os importe no imsomnia
-    [Download imsomnia json file](https://drive.google.com/file/d/1qvtbVErwfw-QY_1WuT2l2wZbLU6xyydb/view?usp=sharing)
+-   Download the JSON files and import them into Insomnia
+    [Download imsomnia json file](https://drive.google.com/file/d/18KULzRj5Gn2sARYLoD_wylefSzxgTwwb/view?usp=sharing)
 
--   Drag and drop do arquivo baixado .json para a UI do imsomnia. A importação será realizada automaticamente.
--   Rode a primeira api "token" que retornará um access Token para ser usado nas outras apis do Crud. No Header foi definido uma autenticação que ficaria nas settings do github. estão hard-coded apenas para demonstração.
-    ![Screenshot](https://i.ibb.co/FVgYmBx/image.png)
+-   Drag and drop the downloaded .json file onto the Insomnia UI. The import will be done automatically.
 
--   Agora insira o token gerado na próxima api no header de Authentication
-    ![Screenshot](https://i.ibb.co/C92Fpy7/image.png)
-    ![Screenshot](https://i.ibb.co/7Q3fKkn/image.png)
+Run the first "token" API, which will return an access token to be used in other CRUD APIs. Authentication has been defined in the headers, but for demonstration purposes, they are hard-coded.
+    ![Screenshot](https://i.ibb.co/2dvMNQR/image.png)
 
--   Envie o post e confira no console do firebase e também na api de listar
+-   Now, insert the generated token into the next API in the Authentication header.
+    ![Screenshot](https://i.ibb.co/n7Lhmnt/image.png)
+    ![Screenshot](https://i.ibb.co/RyC19Gr/image.png)
 
--   Implementação com jest e supertest
-    ![Screenshot](https://i.ibb.co/sbm5Hsg/image.png)
+-   Send the POST request and check in the Firebase console and the list API.
+    ![Screenshot](https://i.ibb.co/RySFQw1/image.png)
+
+
+-   Implementation with Jest and Supertest (mock)
+    ![Screenshot](https://i.ibb.co/DQ2KMNv/image.png)
