@@ -77,10 +77,7 @@ describe('Token Route Tests', () => {
             next()
         })
 
-        const response = await request(app)
-            .get('/api/token')
-            .set('email', user)
-            .set('pwd', pwd)
+        const response = await request(app).get('/api/token')
         validToken = response?.body.accessToken
 
         expect(response.statusCode).toEqual(200)
@@ -95,10 +92,7 @@ describe('Token Route Tests', () => {
             res.status(400).json({ isAuthenticated: false })
         })
 
-        const response = await request(app)
-            .get('/api/token')
-            .set('email', user)
-            .set('pwd', pwd)
+        const response = await request(app).get('/api/token')
         expect(response.statusCode).toBe(400)
         expect(response.body).toMatchObject({ isAuthenticated: false })
     })
