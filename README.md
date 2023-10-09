@@ -50,4 +50,4 @@ Run the first "token" API, which will return an access token to be used in other
 
 
 -   Implementation with Jest and Supertest (mock)
-    ![Screenshot](https://i.ibb.co/DQ2KMNv/image.png)
+    ![Screenshot](image.png)
