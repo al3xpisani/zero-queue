@@ -9,6 +9,23 @@ author: Alexandre (alexandre.pisani.ant@gmail.com)
 -   npm i
 -   npm run start
 
+### Create .env and setup it with the vars below.
+#### Setup a google cloud firebase with your own ID
+```
+NODE_ENV=dev
+EXPRESS_PORT=3000
+
+COLLECTION_NAME=smart-box
+
+authDomain=
+apiKey=
+projectId=
+storageBucket=
+messagingSenderId=
+appId=1:
+measurementId=
+```
+
 ## Firebase console
 ### Create your onw google cloud firebase at firebase console and change the information below by your own or concat the developer to send you the data for tests
 
