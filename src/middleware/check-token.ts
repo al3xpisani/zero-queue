@@ -17,13 +17,6 @@ export const checkValidToken: RequestHandler = async (
     const token = req.header("Authorization").replace("Bearer", "").trim()
     const auth = getAuth(app)
     const clientProvidedToken = auth.currentUser
-
-    res.header({
-        origin: "*",
-        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-        preflightContinue: false,
-        optionsSuccessStatus: 200
-    })
     appAdmin
         .auth()
         .verifyIdToken(String(token))
