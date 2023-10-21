@@ -3,6 +3,10 @@ export type AuthResponse = {
     accessToken: string | null
 }
 
+export type RedisResponse = {
+    redisClientError: boolean
+}
+
 export type FirebaseOptions = {
     apiKey: string
     authDomain: string
@@ -13,6 +17,24 @@ export type FirebaseOptions = {
     measurementId: string
 }
 
-export type DiagramSchema = {
-    body: object
+export enum Servicetype {
+    Cartao = 'Cartao',
+    Emprestimo = 'Emprestimo',
+    Outro = 'Outros'
+}
+
+export type RedisQueueSchema = {
+    id: string
+    ticketName: string
+    serviceType: Servicetype
+    issue: string
+    timestampIssue: string
+}
+
+export type TicketGridSchema = {
+    id: string
+    ticketName: string
+    serviceTypeArea: Servicetype
+    issue: string
+    timestampIssue: string
 }

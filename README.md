@@ -1,6 +1,6 @@
-# PlayBOX
+# Invext
 
-## _CRUD developed in NodeJS with Express and Google Cloud (Firebase)_
+## _CRUD developed in NodeJS with Express, Redis and Google Cloud (Firebase)_
 
 author: Alexandre (alexandre.pisani.ant@gmail.com)
 
@@ -13,17 +13,18 @@ author: Alexandre (alexandre.pisani.ant@gmail.com)
 #### Setup a google cloud firebase with your own ID
 ```
 NODE_ENV=dev
+SERVER=localhost
 EXPRESS_PORT=3000
+REDIS_PORT=6379
+COLLECTION_NAME=zero-queue
 
-COLLECTION_NAME=smart-box
-
-authDomain=
-apiKey=
-projectId=
-storageBucket=
-messagingSenderId=
-appId=1:
-measurementId=
+authDomain=zeroqueue-xxx.firebaseapp.com
+apiKey=xxx
+projectId=zeroqueue-xx
+storageBucket=zeroqueue-xx.appspot.com
+messagingSenderId=xx
+appId=1:178763142648:web:xx
+measurementId=G-xxx
 ```
 
 ## Firebase console
@@ -42,7 +43,7 @@ export const firebaseConfig: FirebaseOptions = {
 }
 ```
 [Google firebase console](https://console.firebase.google.com/u/0/project/zeroqueue-30894/firestore)
-![Screenshot](https://i.ibb.co/WW5b4QL/image.png)
+![Firebase: zero-queue collection](image-1.png)
 
 ## API Contract (Front-End team)
 
@@ -59,12 +60,21 @@ Run the first "token" API, which will return an access token to be used in other
     ![Screenshot](https://i.ibb.co/2dvMNQR/image.png)
 
 -   Now, insert the generated token into the next API in the Authentication header.
-    ![Screenshot](https://i.ibb.co/n7Lhmnt/image.png)
-    ![Screenshot](https://i.ibb.co/RyC19Gr/image.png)
+![create ticket](image-2.png)
+![Authorization](image-3.png)
 
--   Send the POST request and check in the Firebase console and the list API.
-    ![Screenshot](https://i.ibb.co/RySFQw1/image.png)
+-   Now, Lets delete (close) some ticket in the firebase
+![Alt text](image-5.png)
 
+### Pull Redis docker first of all.
+> docker pull redis
+#### Run the container and exposes it to port 6379
+> docker run -d --name my-redis-container -p 6379:6379 redis
+#### Start nodejs on localhost and fetch APIs as described in the topis below
+#### Access container:
+> docker exec -it my-redis-container sh
+Inside the container run : redis-cli
+![Alt text](image-4.png)
 
 -   Implementation with Jest and Supertest (mock)
     ![Screenshot](image.png)

@@ -1,5 +1,5 @@
 import { Express } from 'express'
-import routerDiagram from './diagrams/diagram'
+import routerTicket from './ticket/ticket'
 import routerToken from './token/token'
 const setRoutePaths = (app: Express) => {
     app.get('/', (req, res) => {
@@ -7,6 +7,6 @@ const setRoutePaths = (app: Express) => {
     })
 
     app.use('/api/token', routerToken)
-    app.use('/api/diagrams', routerDiagram)
+    app.use('/api/ticket', routerTicket)
 }
 export default setRoutePaths

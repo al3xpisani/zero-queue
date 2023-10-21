@@ -7,7 +7,7 @@ import {
     updateDoc
 } from "firebase/firestore"
 import { addDoc, db, collection } from "./firebase-config"
-import { DiagramSchema } from "../types"
+import { TicketGridSchema } from '../types'
 
 export const deleteFirebaseDoc = async (
     collectionName: string,
@@ -16,25 +16,23 @@ export const deleteFirebaseDoc = async (
 ) => {
     const firebaseQuery = query(
         collection(db, collectionName),
-        where(searchFieldName, "==", searchValue)
+        where(searchFieldName, '==', searchValue)
     )
 
-    const promises = []
+    const entities = []
     const querySnapshot = await getDocs(firebaseQuery)
 
     await new Promise<void>((resolve) => {
         querySnapshot.forEach((doc) => {
-            promises.push({
-                status: "Record deleted",
+            entities.push({
+                status: 'Record deleted',
                 deletedItem: doc.data()
             })
             deleteDoc(doc.ref)
         })
         resolve()
     })
-    return promises.length === 0
-        ? { status: searchFieldName + " not found to be deleted" }
-        : promises
+    return entities
 }
 
 export const fetchAllFirebaseData = async (
@@ -44,7 +42,7 @@ export const fetchAllFirebaseData = async (
 ) => {
     const firebaseQuery = query(
         collection(db, collectionName),
-        orderBy(orderByField, isAscSorted ? "asc" : "desc")
+        orderBy(orderByField, isAscSorted ? 'asc' : 'desc')
     )
 
     const entity = []
@@ -64,8 +62,8 @@ const fetchFirebaseDataMatch = async (
 ) => {
     const firebaseQuery = query(
         collection(db, collectionName),
-        where(searchFieldName, "==", searchValue),
-        orderBy(orderByField, isAscSorted ? "asc" : "desc")
+        where(searchFieldName, '==', searchValue),
+        orderBy(orderByField, isAscSorted ? 'asc' : 'desc')
     )
 
     const entity = []
@@ -87,9 +85,9 @@ export const fetchFirebaseLikeAt = async (
     try {
         const startAtNameRes = query(
             collection(db, collectionName),
-            where(searchFieldName, "==", searchValue),
-            where(searchFieldName1, ">=", searchValue1),
-            where(searchFieldName1, "<=", searchValue1 + "\uf8ff")
+            where(searchFieldName, '==', searchValue),
+            where(searchFieldName1, '>=', searchValue1),
+            where(searchFieldName1, '<=', searchValue1 + '\uf8ff')
         )
 
         const querySnapshot = await getDocs(startAtNameRes)
@@ -97,13 +95,13 @@ export const fetchFirebaseLikeAt = async (
             entity.push(doc.data())
         })
     } catch (error) {
-        console.log("error from firebase query fields starting with ", error)
+        console.log('error from firebase query fields starting with ', error)
     }
     return entity
 }
 
 export const addFirebaseDocument = async (
-    documentEntity: DiagramSchema,
+    documentEntity: TicketGridSchema,
     collectionName: string
 ) => {
     try {

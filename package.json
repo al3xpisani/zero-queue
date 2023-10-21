@@ -1,5 +1,5 @@
 {
-    "name": "api-box",
+    "name": "invext",
     "version": "1.0.0",
     "description": "CRUD api diagram ",
     "main": "dist/index.js",
@@ -47,6 +47,7 @@
         "firebase-admin": "^11.9.0",
         "http-status": "^1.7.0",
         "jest-fetch-mock": "^3.0.3",
+        "redis": "^4.6.10",
         "ts-jest": "^29.1.0",
         "uuid": "^9.0.0"
     }

@@ -1,17 +1,12 @@
 import express from "express"
 import setRoutePaths from "./routes"
 import "dotenv/config"
-import cors from "cors"
-import bodyParser from "body-parser"
+import cors from 'cors'
 
 const app = express()
-app.use(cors())
 const port = process.env.EXPRESS_PORT
+app.use(cors())
 setRoutePaths(app)
-
-export const setBodyParser2Json = () => {
-    return app.use(bodyParser.json())
-}
 
 app.listen(port, () => {
     return console.log(`Express is listening at http://localhost:${port}`)
