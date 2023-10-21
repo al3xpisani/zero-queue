@@ -34,7 +34,7 @@ routerTicket.post(
                 req.redisClient
             )
             return res.status(httpStatus.CREATED).json({
-                status: 'Ticket - Record created.',
+                status: `Ticket created and dispatched to area ${req.body.serviceTypeArea}`,
                 data: [newCreatedTicket]
             })
         } catch (e) {
@@ -101,7 +101,7 @@ routerTicket.delete(
                 })
             }
             return res.status(httpStatus.OK).json({
-                status: 'Ticket - Record deleted.',
+                status: 'Ticket - Record closed (deleted).',
                 data: [responseRemove]
             })
         } catch (e) {

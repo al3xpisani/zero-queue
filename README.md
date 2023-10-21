@@ -52,7 +52,7 @@ export const firebaseConfig: FirebaseOptions = {
 Step-by-step to test the back-end APIs
 
 -   Download the JSON files and import them into Insomnia
-    [Download imsomnia json file](https://drive.google.com/file/d/18KULzRj5Gn2sARYLoD_wylefSzxgTwwb/view?usp=sharing)
+    [Download imsomnia json file](https://drive.google.com/file/d/145I5okDFDkm5TFr87sL5E2U6OBmofWov/view?usp=share_link)
 
 -   Drag and drop the downloaded .json file onto the Insomnia UI. The import will be done automatically.
 
@@ -63,8 +63,20 @@ Run the first "token" API, which will return an access token to be used in other
 ![create ticket](image-2.png)
 ![Authorization](image-3.png)
 
--   Now, Lets delete (close) some ticket in the firebase
-![Alt text](image-5.png)
+- After the creation of the third ticket to the same Attendance Area, the ticket is queued in REDIS
+![Ticket queued in Redis](image-6.png)
+
+- See the ticket was queued in Redis
+![Ticket queued in Redis](image-7.png)
+
+-   Now, Lets delete (close) some ticket in the firebase.The ticket was deleted in firebase and moved from queue to firebase
+![Ticket moved from queue to firebase (synced)](image-8.png)
+
+- Lets try to delete a ticket (Cartao area) in firebase but this theres no any queued ticket in redis.
+![No ticket in redis for Area Cartao](image-9.png)
+
+- See!!!! the ticket was deleted in firebase only
+![theres no queued ticket in redis](image-10.png)
 
 ### Pull Redis docker first of all.
 > docker pull redis
@@ -73,8 +85,8 @@ Run the first "token" API, which will return an access token to be used in other
 #### Start nodejs on localhost and fetch APIs as described in the topis below
 #### Access container:
 > docker exec -it my-redis-container sh
-Inside the container run : redis-cli
-![Alt text](image-4.png)
+ - Inside the container run : redis-cli and
+![redis-cli inside the container](image-11.png)
 
 -   Implementation with Jest and Supertest (mock)
     ![Screenshot](image.png)
