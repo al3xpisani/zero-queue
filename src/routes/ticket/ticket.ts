@@ -11,7 +11,6 @@ import {
 } from '../../controllers/ticketController'
 import { checkValidToken } from '../../middleware/check-token'
 import httpStatus from 'http-status'
-import { midRedisClient } from '../../middleware/midRedisClient'
 
 const routerTicket = express.Router()
 const midVerifyValidToken: RequestHandler = (
@@ -25,7 +24,6 @@ const midVerifyValidToken: RequestHandler = (
 routerTicket.post(
     '/',
     // midVerifyValidToken,
-    midRedisClient,
     bodyParser.json(),
     async (req: Request, res: Response) => {
         try {
@@ -84,7 +82,6 @@ routerTicket.get(
 routerTicket.delete(
     '/:TicketName',
     // midVerifyValidToken,
-    midRedisClient,
     bodyParser.json(),
     async (req: Request, res: Response) => {
         try {
