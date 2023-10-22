@@ -25,10 +25,9 @@ export const createTicketService = async (
         if (hasOpenedTicketInFirebase.length <= 2) {
             await createFirebaseTicket(ticketData)
             return { data: `Ticket created for ${ticketData.serviceTypeArea}` }
-        } else {
-            await sendTicketToQueue(redisClient, ticketData)
-            return { data: `Ticket queued for ${ticketData.serviceTypeArea}` }
         }
+        await sendTicketToQueue(redisClient, ticketData)
+        return { data: `Ticket queued for ${ticketData.serviceTypeArea}` }
     } catch (e) {
         console.error('Error when creating Ticket :  ', e)
         return { data: `Error when creating Ticket : ${e}` }
@@ -130,10 +129,7 @@ export const deleteTicketsService = async (
                 deletedItem: { serviceTypeArea }
             }
         ] = responseDelete
-        const syncResponse = await syncRedisFirebase(
-            redisClient,
-            serviceTypeArea
-        )
+        const syncResponse = await syncRedisTicket(redisClient, serviceTypeArea)
         if (syncResponse?.id === -1) {
             return {
                 status: `Uhhuuuu :) Theres no ticket in the queue to be synced.`
@@ -151,7 +147,7 @@ export const deleteTicketsService = async (
     }
 }
 
-const syncRedisFirebase = async (
+const syncRedisTicket = async (
     redisClient: RedisClientType,
     queueName: string
 ) => {

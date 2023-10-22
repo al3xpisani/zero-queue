@@ -63,6 +63,11 @@ Run the first "token" API, which will return an access token to be used in other
 ![create ticket](image-2.png)
 ![Authorization](image-3.png)
 
+- The middleware token was deactivated in source code for didatic purposes only.Feel free to comment in the token at:
+![post](image-13.png)
+
+![delete](image-14.png)
+
 - After the creation of the third ticket to the same Attendance Area, the ticket is queued in REDIS
 ![Ticket queued in Redis](image-6.png)
 
@@ -86,7 +91,16 @@ Run the first "token" API, which will return an access token to be used in other
 #### Access container:
 > docker exec -it my-redis-container sh
  - Inside the container run : redis-cli and
-![redis-cli inside the container](image-11.png)
+![redis-cli inside the container](image-12.png)
 
 -   Implementation with Jest and Supertest (mock)
     ![Screenshot](image.png)
+
+## Finally :) Lets create some tickets and see what happens
+### The first 3 tickets goes to firebase. It means the attendant has only 3 tickets to resolve.
+ - After the third ticket create, it goes to redis queue.
+ - As soon as the attendant resolves (close) one ticket, the queue transfers ticket to firebase again.
+ - [![Navigating thru the app](image-15.png)](https://youtu.be/qOU5n9jsi_A)
+ 
+## Finally2 :) Lets create some tickets and clean up queue
+- [![Navigating thru the app](image-16.png)](https://youtu.be/LkAfhdv_nj4)
