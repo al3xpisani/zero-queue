@@ -25,21 +25,20 @@ export const createTicketService = async (
         if (hasOpenedTicketInFirebase.length <= 2) {
             await createFirebaseTicket(ticketData)
             return { data: `Ticket created for ${ticketData.serviceTypeArea}` }
-        }
-        if (hasOpenedTicketInFirebase.length >= 3) {
+        } else {
             await sendTicketToQueue(redisClient, ticketData)
             return { data: `Ticket queued for ${ticketData.serviceTypeArea}` }
         }
-        return ticketData
     } catch (e) {
         console.error('Error when creating Ticket :  ', e)
+        return { data: `Error when creating Ticket : ${e}` }
     }
 }
 
 const generateID = (ticketData: TicketGridSchema) => {
     const id = uuidv4()
     ticketData['id'] = id
-    ticketData['ticketName'] = 'ticket' + id.substring(0, 8)
+    ticketData['ticketName'] = `ticket${id.substring(0, 8)}`
     ticketData['timeStampIssue'] = new Date().toISOString()
     return ticketData
 }
@@ -57,16 +56,8 @@ const sendTicketToQueue = async (
     redisClient: RedisClientType,
     ticketData: TicketGridSchema
 ) => {
-    const mapQueue = new Map<string, RedisQueueSchema>()
     const ticket = generateID(ticketData)
-    mapQueue.set('redis-tickets', {
-        id: ticket.id,
-        ticketName: ticket.ticketName,
-        serviceType: ticket.serviceTypeArea,
-        issue: ticket.issue,
-        timestampIssue: new Date().toISOString()
-    })
-    await addMapQueueData(redisClient, ticket.serviceTypeArea, mapQueue)
+    await addMapQueueData(redisClient, ticket)
 }
 
 export const listTicketsByIdService = async (
@@ -148,23 +139,14 @@ export const deleteTicketsService = async (
                 status: `Uhhuuuu :) Theres no ticket in the queue to be synced.`
             }
         }
-        let ticketData: TicketGridSchema | null = null
-        if ('ticketName' in syncResponse) {
-            ticketData = {
-                id: syncResponse.id.toString(),
-                ticketName: syncResponse.ticketName,
-                serviceTypeArea: syncResponse.serviceType,
-                issue: syncResponse.issue,
-                timestampIssue: syncResponse.timestampIssue
-            }
-        }
-        await syncFirebaseTicket(ticketData)
+        const typeAssertionSyncResponse = syncResponse as RedisQueueSchema
+        await syncFirebaseTicket(typeAssertionSyncResponse)
         return {
-            data: `Ticket for area ${ticketData.serviceTypeArea} synced from queue to firebase with ID ${syncResponse.id}`
+            data: `Ticket for area ${typeAssertionSyncResponse.serviceTypeArea} synced from queue to firebase with ID ${typeAssertionSyncResponse.id}`
         }
     } catch (e) {
         return {
-            error: `Error when deleting Tickets : ${e} `
+            error: `Error when deleting and syncing Tickets : ${e} `
         }
     }
 }

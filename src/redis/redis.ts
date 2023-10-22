@@ -1,6 +1,6 @@
 import { RedisClientType } from 'redis'
 import 'dotenv/config'
-import { RedisQueueSchema } from '../types'
+import { RedisQueueSchema, TicketGridSchema } from '../types'
 
 export const addRawQueueData = async (
     redisClient: RedisClientType,
@@ -13,14 +13,22 @@ export const addRawQueueData = async (
 }
 export const addMapQueueData = async (
     redisClient: RedisClientType,
-    mapKey: string,
-    value: Map<string, RedisQueueSchema>
+    ticketData: TicketGridSchema
 ) => {
     const client: RedisClientType = redisClient
-    const serializedValue = JSON.stringify(Array.from(value))
-    // const response = await client.hSet(mapKey, 'data', serializedValue)
-    const response = await client.rPush(mapKey, serializedValue)
-
+    const mapQueue = new Map<string, RedisQueueSchema>()
+    mapQueue.set('redis-tickets', {
+        id: ticketData.id,
+        ticketName: ticketData.ticketName,
+        serviceTypeArea: ticketData.serviceTypeArea,
+        issue: ticketData.issue,
+        timestampIssue: new Date().toISOString()
+    })
+    const serializedValue = JSON.stringify(Array.from(mapQueue))
+    const response = await client.rPush(
+        ticketData.serviceTypeArea,
+        serializedValue
+    )
     return response
 }
 export const readMapQueueData = async (
@@ -48,9 +56,9 @@ export const syncQueue = async (
     await removeQueueItem(redisClient, queueRedisName, olderElementIndex[0])
 
     const [
-        [queueName, { id, ticketName, serviceType, issue, timestampIssue }]
+        [queueName, { id, ticketName, serviceTypeArea, issue, timestampIssue }]
     ] = JSON.parse(olderElementIndex[0])
-    return { id, ticketName, serviceType, issue, timestampIssue, queueName }
+    return { id, ticketName, serviceTypeArea, issue, timestampIssue, queueName }
 }
 
 export const removeQueueItem = async (

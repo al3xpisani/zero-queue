@@ -26,7 +26,7 @@ export enum Servicetype {
 export type RedisQueueSchema = {
     id: string
     ticketName: string
-    serviceType: Servicetype
+    serviceTypeArea: Servicetype
     issue: string
     timestampIssue: string
 }
