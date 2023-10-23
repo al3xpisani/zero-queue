@@ -5,7 +5,7 @@ import fetchFirebaseDataMatch, {
     updateFirebaseDocument
 } from '../config/fetchFirebaseData'
 import { v4 as uuidv4 } from 'uuid'
-import { RedisQueueSchema, TicketGridSchema } from '../types'
+import { RedisQueueSchema, Servicetype, TicketGridSchema } from '../types'
 import { addMapQueueData, syncQueue } from '../redis/redis'
 import { RedisClientType } from 'redis'
 import { clearAccentCapitalize } from '../util/formatWord'
@@ -15,6 +15,11 @@ export const createTicketService = async (
     redisClient: RedisClientType
 ) => {
     try {
+        if (hasRequestMissingParams(ticketData)) {
+            return {
+                error: `There are missing parameters from request. Operation aborted`
+            }
+        }
         ticketData.serviceTypeArea = clearAccentCapitalize(
             ticketData.serviceTypeArea
         )
@@ -32,6 +37,13 @@ export const createTicketService = async (
         console.error('Error when creating Ticket :  ', e)
         return { data: `Error when creating Ticket : ${e}` }
     }
+}
+
+const hasRequestMissingParams = (ticketData: TicketGridSchema) => {
+    return (
+        !ticketData?.serviceTypeArea ||
+        !(ticketData.serviceTypeArea in Servicetype)
+    )
 }
 
 const generateID = (ticketData: TicketGridSchema) => {

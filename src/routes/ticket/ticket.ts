@@ -31,6 +31,13 @@ routerTicket.post(
                 req.body,
                 req.redisClient
             )
+            const { error } = newCreatedTicket || {}
+            if (error) {
+                return res.status(httpStatus.BAD_REQUEST).json({
+                    status: `Operation cancelled.`,
+                    data: [newCreatedTicket]
+                })
+            }
             return res.status(httpStatus.CREATED).json({
                 status: `Ticket created and dispatched to area ${req.body.serviceTypeArea}`,
                 data: [newCreatedTicket]
