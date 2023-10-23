@@ -20,7 +20,7 @@ export type FirebaseOptions = {
 export enum Servicetype {
     Cartao = 'Cartao',
     Emprestimo = 'Emprestimo',
-    Outro = 'Outros'
+    Outros = 'Outros'
 }
 
 export type RedisQueueSchema = {
